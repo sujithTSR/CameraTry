@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="bottom">
+
+    <FrameLayout
+        android:layout_width="100dp"
+        android:padding="2dp"
+        android:layout_height="20dp">
+        <View
+            android:layout_width="match_parent"
+            android:background="@android:color/transparent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:alpha="1"
+            android:src="@drawable/img"
+            />
+    </FrameLayout>
+
+
+</LinearLayout>
