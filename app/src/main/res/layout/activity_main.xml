@@ -14,25 +14,25 @@
         <RelativeLayout
             android:id="@+id/camera_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_gravity="center"
             >
             <SurfaceView
                 android:id="@+id/camerapreview"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-            <RelativeLayout
+                android:layout_height="match_parent" />
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:id="@+id/rect_box_container"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
                 <ImageView
                     android:id="@+id/rect_box"
                     android:layout_width="10dp"
                     android:layout_height="10dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/img" />
-            </RelativeLayout>
+            </FrameLayout>
         </RelativeLayout>
 
     </LinearLayout>

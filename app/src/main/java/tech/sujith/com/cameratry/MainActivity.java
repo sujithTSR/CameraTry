@@ -32,6 +32,7 @@ import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -63,7 +64,8 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Vi
     SurfaceHolder surfaceHolder;
     boolean preview = false;
     LayoutInflater controlInflater = null;
-    RelativeLayout camera_container,rect_box_container;
+    RelativeLayout camera_container;
+    FrameLayout rect_box_container;
     Button Button01;
     int width_ar;
     int height_ar;
@@ -78,7 +80,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Vi
         ll2 = (LinearLayout) findViewById(R.id.ll2);
         surfaceView = (SurfaceView) findViewById(R.id.camerapreview);
         camera_container = (RelativeLayout) findViewById(R.id.camera_container);
-        rect_box_container = (RelativeLayout) findViewById(R.id.rect_box_container);
+        rect_box_container = (FrameLayout) findViewById(R.id.rect_box_container);
         width_ar = 0;
         height_ar = 0;
         rect_box = (ImageView) findViewById(R.id.rect_box);
@@ -121,17 +123,19 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Vi
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
-        android.widget.RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) view
+        android.widget.FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) view
                 .getLayoutParams();
         switch (motionEvent.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
 
                 break;
             case MotionEvent.ACTION_MOVE:
-                RelativeLayout.LayoutParams mParams = (RelativeLayout.LayoutParams) view
-                        .getLayoutParams();
+
                 int x_cord = (int) motionEvent.getRawX();
                 int y_cord = (int) motionEvent.getRawY();
+                Log.v("HeightXWidth", CAMERA_SCREEN_HEIGHT + "  " + CAMERA_SCREEN_WIDTH + " " + x_cord + " " + y_cord + " " + ll1.getLayoutParams().height + " " + ll1.getLayoutParams().width);
+
+
                 if (x_cord > CAMERA_SCREEN_HEIGHT) {
                     x_cord = CAMERA_SCREEN_WIDTH;
                     Log.v("coord_change", "xcod>height");
@@ -320,7 +324,8 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Vi
     }
 
     public String get_new_image_path(){
-        File imageStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Camera_Try");
+
+        File imageStorageDir = new File(Environment.getExternalStorageDirectory()+"/DCIM/", "Camera_Try");
         if (!imageStorageDir.exists()){
             imageStorageDir.mkdirs();
         }
