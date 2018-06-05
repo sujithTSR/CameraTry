@@ -30,6 +30,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -70,7 +71,9 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Vi
     int width_ar;
     int height_ar;
     ImageView rect_box;
-
+    FrameLayout.LayoutParams parms;
+    LinearLayout.LayoutParams par;
+    float dx=0,dy=0,x=0,y=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,40 +125,33 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Vi
     }
 
     @Override
-    public boolean onTouch(View view, MotionEvent motionEvent) {
-        android.widget.FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) view
+    public boolean onTouch(View myView, MotionEvent event) {
+         android.widget.FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) myView
                 .getLayoutParams();
-        switch (motionEvent.getActionMasked()) {
-            case MotionEvent.ACTION_DOWN:
+        switch(event.getAction())
+        {
+            case MotionEvent.ACTION_DOWN :
+            {
+                parms = layoutParams;
+                par = (LinearLayout.LayoutParams) getWindow().findViewById(Window.ID_ANDROID_CONTENT).getLayoutParams();
+                dx = event.getRawX() - parms.leftMargin;
+                dy = event.getRawY() - parms.topMargin;
+            }
+            break;
+            case MotionEvent.ACTION_MOVE :
+            {
+                x = event.getRawX();
+                y = event.getRawY();
+                parms.leftMargin = (int) (x-dx);
+                parms.topMargin = (int) (y - dy);
+                myView.setLayoutParams(parms);
+            }
+            break;
+            case MotionEvent.ACTION_UP :
+            {
 
-                break;
-            case MotionEvent.ACTION_MOVE:
-
-                int x_cord = (int) motionEvent.getRawX();
-                int y_cord = (int) motionEvent.getRawY();
-                Log.v("HeightXWidth", CAMERA_SCREEN_HEIGHT + "  " + CAMERA_SCREEN_WIDTH + " " + x_cord + " " + y_cord + " " + ll1.getLayoutParams().height + " " + ll1.getLayoutParams().width);
-
-
-                if (x_cord > CAMERA_SCREEN_HEIGHT) {
-                    x_cord = CAMERA_SCREEN_WIDTH;
-                    Log.v("coord_change", "xcod>height");
-                }
-                if (y_cord > CAMERA_SCREEN_HEIGHT) {
-                    y_cord = CAMERA_SCREEN_WIDTH;
-                    Log.v("coord_change", "ycod>height");
-
-                }
-
-                layoutParams.leftMargin = x_cord - 15;
-                layoutParams.topMargin = y_cord - 100;
-
-                layoutParams.rightMargin = x_cord - 50;
-                layoutParams.bottomMargin = x_cord - 50;
-                view.setLayoutParams(layoutParams);
-
-                break;
-            default:
-                break;
+            }
+            break;
         }
         return true;
     }
@@ -340,6 +336,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Vi
     @Override
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
         camera.stopPreview();
+        camera.setPreviewCallback(null);
         camera.release();
         camera = null;
         preview = false;
